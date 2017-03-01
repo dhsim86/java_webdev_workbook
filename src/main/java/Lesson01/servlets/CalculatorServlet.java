@@ -12,7 +12,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 
-@WebServlet("/calc")
+@WebServlet("/calc_lesson01")
 @SuppressWarnings("serial")
 public class CalculatorServlet extends GenericServlet {
 
