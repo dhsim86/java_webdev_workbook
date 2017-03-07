@@ -71,6 +71,8 @@ public class MemberAddServlet extends HttpServlet {
             out.println("<body>");
             out.println("<p>register success!</p>");
             out.println("</body></html>");
+
+            response.addHeader("Refresh", "1;url=list");
         }
         catch (Exception e) {
 
