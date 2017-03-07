@@ -6,11 +6,32 @@
   id="WebApp_ID"
   version="3.0">
 
-  <!-- servlets -->
-  <servlet>
-    <servlet-name>Hello</servlet-name>
-    <servlet-class>Lesson03.servlets.HelloWorld</servlet-class>
-  </servlet>
+    <!-- servlets -->
+    <servlet>
+      <servlet-name>Hello</servlet-name>
+      <servlet-class>Lesson03.servlets.HelloWorld</servlet-class>
+    </servlet>
+
+    <servlet>
+      <servlet-name>MemberUpdateServlet</servlet-name>
+      <servlet-class>Lesson04.MemberUpdateServlet</servlet-class>
+      <init-param>
+          <param-name>driver</param-name>
+          <param-value>com.mysql.jdbc.Driver</param-value>
+      </init-param>
+      <init-param>
+          <param-name>url</param-name>
+          <param-value>jdbc:mysql://localhost/studydb?useUnicode=true&amp;characterEncoding=UTF-8</param-value>
+      </init-param>
+      <init-param>
+          <param-name>username</param-name>
+          <param-value>study</param-value>
+      </init-param>
+      <init-param>
+          <param-name>password</param-name>
+          <param-value>study</param-value>
+      </init-param>
+    </servlet>
 
     <!--
     <servlet>
@@ -18,27 +39,31 @@
       <servlet-class>Lesson03.servlets.CalculatorServlet</servlet-class>
     </servlet> -->
 
-  <!-- servlet mappings -->
-  <servlet-mapping>
-    <servlet-name>Hello</servlet-name>
-    <url-pattern>/Hello</url-pattern>
-  </servlet-mapping>
+    <!-- servlet mappings -->
+    <servlet-mapping>
+      <servlet-name>Hello</servlet-name>
+      <url-pattern>/Hello</url-pattern>
+    </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>MemberUpdateServlet</servlet-name>
+        <url-pattern>/member/update</url-pattern>
+    </servlet-mapping>
     <!--
     <servlet-mapping>
       <servlet-name>Calculator</servlet-name>
       <url-pattern>/calc</url-pattern>
     </servlet-mapping> -->
 
-  <!-- welcome file setting -->
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
+    <!-- welcome file setting -->
+    <welcome-file-list>
+      <welcome-file>index.html</welcome-file>
+      <welcome-file>index.htm</welcome-file>
+      <welcome-file>index.jsp</welcome-file>
+      <welcome-file>default.html</welcome-file>
+      <welcome-file>default.htm</welcome-file>
+      <welcome-file>default.jsp</welcome-file>
+    </welcome-file-list>
 
 </web-app>
 
