@@ -56,6 +56,8 @@ public class MemberUpdateServlet extends HttpServlet {
                         rs.getString("email") + "'><br>");
             out.println("registered date: " + rs.getDate("cre_date") + "<br>");
             out.println("<input type='submit' value='save'>");
+            out.println("<input type='button' value='delete'" +
+                        " onclick='location.href=\"delete?no=" + request.getParameter("no") + "\"'>");
             out.println("<input type='button' value='cancel'" +
                         " onclick='location.href=\"list\"'>");
             out.println("</form>");

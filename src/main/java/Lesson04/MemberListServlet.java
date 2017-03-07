@@ -54,7 +54,9 @@ public class MemberListServlet extends GenericServlet {
                         "<a href='update?no=" + rs.getInt("mno") + "'>" +
                         rs.getString("mname") + "</a>, " +
                         rs.getString("email") + ", " +
-                        rs.getDate("cre_date") + "<br>"
+                        rs.getDate("cre_date") +
+                        "<a href='delete?no=" + rs.getInt("mno") + "'>" +
+                        "[delete]" + "</a>" + "<br>"
                 );
             }
             out.println("</body></html>");
