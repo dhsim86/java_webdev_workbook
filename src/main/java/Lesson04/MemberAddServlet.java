@@ -65,14 +65,16 @@ public class MemberAddServlet extends HttpServlet {
             stmt.setString(3, request.getParameter("name"));
             stmt.executeUpdate();
 
-            response.setContentType("text/html; charset=UTF-8");
+            response.sendRedirect("list");
+
+            /*response.setContentType("text/html; charset=UTF-8");
             PrintWriter out = response.getWriter();
             out.println("<html><head><title>Result registering member</title></head>");
             out.println("<body>");
             out.println("<p>register success!</p>");
             out.println("</body></html>");
 
-            response.addHeader("Refresh", "1;url=list");
+            response.addHeader("Refresh", "1;url=list");*/
         }
         catch (Exception e) {
 
