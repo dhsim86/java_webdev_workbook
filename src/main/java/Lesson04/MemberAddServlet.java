@@ -1,5 +1,6 @@
 package Lesson04;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,15 +46,15 @@ public class MemberAddServlet extends HttpServlet {
         PreparedStatement stmt = null;
 
         try {
+            ServletContext sc = this.getServletContext();
 
             request.setCharacterEncoding("UTF-8");
-            
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 
+            Class.forName(sc.getInitParameter("driver"));
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/studydb?useUnicode=true&characterEncoding=UTF-8",
-                    "study",
-                    "study"
+                sc.getInitParameter("url"),
+                sc.getInitParameter("username"),
+                sc.getInitParameter("password")
             );
 
             stmt = conn.prepareStatement(

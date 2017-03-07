@@ -1,5 +1,6 @@
 package Lesson04;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,11 +25,13 @@ public class MemberUpdateServlet extends HttpServlet {
         ResultSet rs = null;
 
         try {
-            Class.forName(this.getInitParameter("driver"));
+            ServletContext sc = this.getServletContext();
+
+            Class.forName(sc.getInitParameter("driver"));
             conn = DriverManager.getConnection(
-                this.getInitParameter("url"),
-                this.getInitParameter("username"),
-                this.getInitParameter("password")
+                sc.getInitParameter("url"),
+                sc.getInitParameter("username"),
+                sc.getInitParameter("password")
             );
             stmt = conn.createStatement();
             rs = stmt.executeQuery(
@@ -79,11 +82,13 @@ public class MemberUpdateServlet extends HttpServlet {
         PreparedStatement stmt = null;
 
         try {
-            Class.forName(this.getInitParameter("driver"));
+            ServletContext sc = this.getServletContext();
+
+            Class.forName(sc.getInitParameter("driver"));
             conn = DriverManager.getConnection(
-                this.getInitParameter("url"),
-                this.getInitParameter("username"),
-                this.getInitParameter("password")
+                sc.getInitParameter("url"),
+                sc.getInitParameter("username"),
+                sc.getInitParameter("password")
             );
             stmt = conn.prepareStatement(
                 "update members set email = ?, mname = ?, mod_date = now()" +

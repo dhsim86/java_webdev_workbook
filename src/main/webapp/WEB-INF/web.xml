@@ -6,6 +6,23 @@
   id="WebApp_ID"
   version="3.0">
 
+    <context-param>
+        <param-name>driver</param-name>
+        <param-value>com.mysql.jdbc.Driver</param-value>
+    </context-param>
+    <context-param>
+        <param-name>url</param-name>
+        <param-value>jdbc:mysql://localhost/studydb?useUnicode=true&amp;characterEncoding=UTF-8</param-value>
+    </context-param>
+    <context-param>
+        <param-name>username</param-name>
+        <param-value>study</param-value>
+    </context-param>
+    <context-param>
+        <param-name>password</param-name>
+        <param-value>study</param-value>
+    </context-param>
+
     <!-- servlets -->
     <servlet>
       <servlet-name>Hello</servlet-name>
