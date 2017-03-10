@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 /**
  * Created by Dongho on 2017. 3. 7..
@@ -43,7 +42,6 @@ public class MemberDeleteServlet extends HttpServlet {
             stmt.setInt(1, Integer.parseInt(request.getParameter("no")));
 
             stmt.executeUpdate();
-
             response.sendRedirect("list");
         }
         catch (Exception e) {

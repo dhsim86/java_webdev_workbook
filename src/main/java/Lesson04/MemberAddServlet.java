@@ -48,8 +48,6 @@ public class MemberAddServlet extends HttpServlet {
         try {
             ServletContext sc = this.getServletContext();
 
-            request.setCharacterEncoding("UTF-8");
-
             Class.forName(sc.getInitParameter("driver"));
             conn = DriverManager.getConnection(
                 sc.getInitParameter("url"),
