@@ -1,6 +1,8 @@
-package Lesson04;
+package Lesson05;
 
-import javax.servlet.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,11 +13,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Dongho on 2017. 3. 1..
  */
-@WebServlet("/member/Lesson04/list")
+@WebServlet("/member/list")
 public class MemberListServlet extends HttpServlet {
 
     @Override
@@ -45,24 +49,23 @@ public class MemberListServlet extends HttpServlet {
             );
 
             response.setContentType("text/html; charset=UTF-8");
-            PrintWriter out = response.getWriter();
-
-            out.println("<html><head><title>member list</title></head>");
-            out.println("<body><h1>member list</h1>");
-            out.println("<p><a href='add'>new member</a></p>");
+            List<Member> memberList = new ArrayList<>();
 
             while(rs.next()) {
-                out.println(
-                        rs.getInt("mno") + ", " +
-                        "<a href='update?no=" + rs.getInt("mno") + "'>" +
-                        rs.getString("mname") + "</a>, " +
-                        rs.getString("email") + ", " +
-                        rs.getDate("cre_date") +
-                        "<a href='delete?no=" + rs.getInt("mno") + "'>" +
-                        "[delete]" + "</a>" + "<br>"
+                memberList.add(new Member()
+                    .setNo(rs.getInt("mno"))
+                    .setName(rs.getString("mname"))
+                    .setEmail(rs.getString("email"))
+                    .setCreatedDate(rs.getDate("cre_date"))
                 );
             }
-            out.println("</body></html>");
+
+            request.setAttribute("memberList", memberList);
+
+            RequestDispatcher rd = request.getRequestDispatcher(
+                    "/Lesson05/MemberList.jsp"
+            );
+            rd.include(request, response);
         }
         catch (Exception e) {
 
