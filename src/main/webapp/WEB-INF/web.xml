@@ -92,7 +92,7 @@
 
     <servlet-mapping>
         <servlet-name>MemberUpdateServlet</servlet-name>
-        <url-pattern>/member/update</url-pattern>
+        <url-pattern>/member/Lesson04/update</url-pattern>
     </servlet-mapping>
     <!--
     <servlet-mapping>

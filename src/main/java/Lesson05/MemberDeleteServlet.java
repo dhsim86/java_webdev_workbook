@@ -1,5 +1,6 @@
-package Lesson04;
+package Lesson05;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,13 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 /**
  * Created by Dongho on 2017. 3. 7..
  */
-@WebServlet("/member/Lesson04/delete")
+@WebServlet("/member/delete")
 public class MemberDeleteServlet extends HttpServlet {
 
     @Override
@@ -39,7 +39,13 @@ public class MemberDeleteServlet extends HttpServlet {
             response.sendRedirect("list");
         }
         catch (Exception e) {
-            throw new ServletException(e);
+
+            request.setAttribute("error", e);
+
+            RequestDispatcher rd = request.getRequestDispatcher(
+                "/Lesson05/Error.jsp"
+            );
+            rd.forward(request, response);
         }
         finally {
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
