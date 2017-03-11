@@ -6,7 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="Lesson05.Member" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +26,8 @@
     <%
         //List<Member> memberList = (List<Member>)request.getAttribute("memberList");
 
-        for (Member member : memberList) {
+        List<Member> dummyList = new ArrayList<Member>();
+        for (Member member : dummyList) {
     %>
     <%=member.getNo()%>
     <a href='update?no=<%=member.getNo()%>'><%=member.getName()%></a>
@@ -33,6 +37,15 @@
     <%
         }
     %>
+
+    <c:forEach var="member" items="${memberList}">
+        ${member.no}
+        <a href="update?no=${member.no}">${member.name}</a>
+        ${member.email}
+        ${member.createdDate}
+        <a href="delete?no=${member.no}">[Delete]</a><br>
+    </c:forEach>
+
     <jsp:include page="Tail.jsp"/>
 </body>
 </html>
