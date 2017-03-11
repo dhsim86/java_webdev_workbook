@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="Lesson05.Member" %>
-<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,8 +16,12 @@
     <jsp:include page="Header.jsp"/>
     <h1>Member List</h1>
     <p><a href='add'> New Member </a></p>
+    <jsp:useBean id="memberList"
+                scope="request"
+                class="java.util.ArrayList"
+                type="java.util.List<Lesson05.Member>"/>
     <%
-        List<Member> memberList = (List<Member>)request.getAttribute("memberList");
+        //List<Member> memberList = (List<Member>)request.getAttribute("memberList");
 
         for (Member member : memberList) {
     %>
