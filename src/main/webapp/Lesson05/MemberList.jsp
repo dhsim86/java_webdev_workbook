@@ -14,6 +14,7 @@
     <title>Member List</title>
 </head>
 <body>
+    <jsp:include page="Header.jsp"/>
     <h1>Member List</h1>
     <p><a href='add'> New Member </a></p>
     <%
@@ -29,5 +30,6 @@
     <%
         }
     %>
+    <jsp:include page="Tail.jsp"/>
 </body>
 </html>
