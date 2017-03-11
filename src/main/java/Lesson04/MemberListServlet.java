@@ -30,13 +30,7 @@ public class MemberListServlet extends HttpServlet {
 
             ServletContext sc = this.getServletContext();
 
-            Class.forName(sc.getInitParameter("driver"));
-
-            conn = DriverManager.getConnection(
-                sc.getInitParameter("url"),
-                sc.getInitParameter("username"),
-                sc.getInitParameter("password")
-            );
+            conn = (Connection) sc.getAttribute("conn");
             stmt = conn.createStatement();
             rs = stmt.executeQuery(
                     "select mno, mname, email, cre_date" +
@@ -71,7 +65,6 @@ public class MemberListServlet extends HttpServlet {
         finally {
             try { if (rs != null) rs.close(); } catch (Exception e) {}
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
-            try { if (conn != null) conn.close(); } catch (Exception e) {}
         }
     }
 }
