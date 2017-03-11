@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 /**
  * Created by Dongho on 2017. 3. 11..
@@ -34,30 +32,19 @@ public class LoginServlet extends HttpServlet {
         HttpServletRequest request, HttpServletResponse response
     ) throws ServletException, IOException {
 
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
         try {
 
             ServletContext sc = this.getServletContext();
-            conn = (Connection)sc.getAttribute("conn");
 
-            stmt = conn.prepareStatement(
-                "select mname, email from members" +
-                " where email = ? and pwd = ?"
+            MemberDao memberdao = new MemberDao();
+            memberdao.setConnection((Connection)sc.getAttribute("conn"));
+
+            Member member = memberdao.exist(
+                request.getParameter("email"),
+                request.getParameter("password")
             );
 
-            stmt.setString(1, request.getParameter("email"));
-            stmt.setString(2, request.getParameter("password"));
-
-            rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                Member member = new Member()
-                    .setEmail(rs.getString("email"))
-                    .setName(rs.getString("mname"));
-
+            if (member != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("member", member);
 
@@ -65,18 +52,13 @@ public class LoginServlet extends HttpServlet {
             }
             else {
                 RequestDispatcher rd = request.getRequestDispatcher(
-                    "/Lesson05/LogInFail.jsp"
+                        "/Lesson05/LogInFail.jsp"
                 );
                 rd.forward(request, response);
             }
         }
         catch (Exception e) {
-
             throw new ServletException(e);
-        }
-        finally {
-            try { if (rs != null) rs.close(); } catch (Exception e) {}
-            try { if (stmt != null) stmt.close(); } catch (Exception e) {}
         }
     }
 }

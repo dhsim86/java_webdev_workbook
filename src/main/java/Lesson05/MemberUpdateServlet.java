@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.*;
 
 /**
@@ -22,30 +21,14 @@ public class MemberUpdateServlet extends HttpServlet {
         HttpServletRequest request, HttpServletResponse response
     ) throws ServletException, IOException {
 
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-
         try {
             ServletContext sc = this.getServletContext();
 
-            conn = (Connection) sc.getAttribute("conn");
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(
-                "select mno, email, mname, cre_date from members" +
-                " where mno = " + request.getParameter("no")
-            );
+            MemberDao memberDao = new MemberDao();
+            memberDao.setConnection((Connection) sc.getAttribute("conn"));
 
             response.setContentType("text/html; charset=UTF-8");
-            rs.next();
-
-            Member member = new Member()
-                    .setNo(Integer.parseInt(request.getParameter("no")))
-                    .setEmail(rs.getString("email"))
-                    .setName(rs.getString("mname"))
-                    .setCreatedDate(rs.getDate("cre_date"));
-
-            request.setAttribute("member", member);
+            request.setAttribute("member", memberDao.selectOne(Integer.parseInt(request.getParameter("no"))));
 
             RequestDispatcher rd = request.getRequestDispatcher(
                 "/Lesson05/MemberUpdate.jsp"
@@ -61,10 +44,6 @@ public class MemberUpdateServlet extends HttpServlet {
             );
             rd.forward(request, response);
         }
-        finally {
-            try { if (rs != null) rs.close(); } catch (Exception e) {}
-            try { if (stmt != null) stmt.close(); } catch (Exception e) {}
-        }
     }
 
     @Override
@@ -72,29 +51,22 @@ public class MemberUpdateServlet extends HttpServlet {
         HttpServletRequest request, HttpServletResponse response
     ) throws ServletException, IOException {
 
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
         try {
             ServletContext sc = this.getServletContext();
 
-            conn = (Connection) sc.getAttribute("conn");
-            stmt = conn.prepareStatement(
-                "update members set email = ?, mname = ?, mod_date = now()" +
-                " where mno = ?"
-            );
-            stmt.setString(1, request.getParameter("email"));
-            stmt.setString(2, request.getParameter("name"));
-            stmt.setInt(3, Integer.parseInt(request.getParameter("no")));
+            MemberDao memberDao = new MemberDao();
+            memberDao.setConnection((Connection) sc.getAttribute("conn"));
 
-            stmt.executeUpdate();
+            Member member = new Member()
+                .setEmail(request.getParameter("email"))
+                .setName(request.getParameter("name"))
+                .setNo(Integer.parseInt(request.getParameter("no")));
+
+            int result = memberDao.update(member);
             response.sendRedirect("list");
         }
         catch (Exception e) {
             throw new ServletException(e);
-        }
-        finally {
-            try { if (stmt != null) stmt.close(); } catch (Exception e) {}
         }
     }
 }

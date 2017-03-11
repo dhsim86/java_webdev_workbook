@@ -8,13 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Dongho on 2017. 3. 1..
@@ -26,35 +20,15 @@ public class MemberListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-
         try {
 
             ServletContext sc = this.getServletContext();
 
-            conn = (Connection) sc.getAttribute("conn");
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(
-                    "select mno, mname, email, cre_date" +
-                    " from members" +
-                    " order by mno asc"
-            );
+            MemberDao memberDao = new MemberDao();
+            memberDao.setConnection((Connection) sc.getAttribute("conn"));
 
+            request.setAttribute("memberList", memberDao.selectList());
             response.setContentType("text/html; charset=UTF-8");
-            List<Member> memberList = new ArrayList<>();
-
-            while(rs.next()) {
-                memberList.add(new Member()
-                    .setNo(rs.getInt("mno"))
-                    .setName(rs.getString("mname"))
-                    .setEmail(rs.getString("email"))
-                    .setCreatedDate(rs.getDate("cre_date"))
-                );
-            }
-
-            request.setAttribute("memberList", memberList);
 
             RequestDispatcher rd = request.getRequestDispatcher(
                     "/Lesson05/MemberList.jsp"
@@ -68,10 +42,6 @@ public class MemberListServlet extends HttpServlet {
                     "/Lesson05/Error.jsp"
             );
             rd.forward(request, response);
-        }
-        finally {
-            try { if (rs != null) rs.close(); } catch (Exception e) {}
-            try { if (stmt != null) stmt.close(); } catch (Exception e) {}
         }
     }
 }

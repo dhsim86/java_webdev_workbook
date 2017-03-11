@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 
 /**
  * Created by Dongho on 2017. 3. 7..
@@ -21,21 +20,15 @@ public class MemberDeleteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
         try {
 
             ServletContext sc = this.getServletContext();
 
-            conn = (Connection) sc.getAttribute("conn");
-            stmt = conn.prepareStatement(
-                "delete from members" +
-                " where mno = ?"
-            );
-            stmt.setInt(1, Integer.parseInt(request.getParameter("no")));
+            MemberDao memberDao = new MemberDao();
+            memberDao.setConnection((Connection) sc.getAttribute("conn"));
 
-            stmt.executeUpdate();
+            int result = memberDao.delete(Integer.parseInt(request.getParameter("no")));
+
             response.sendRedirect("list");
         }
         catch (Exception e) {
@@ -46,9 +39,6 @@ public class MemberDeleteServlet extends HttpServlet {
                 "/Lesson05/Error.jsp"
             );
             rd.forward(request, response);
-        }
-        finally {
-            try { if (stmt != null) stmt.close(); } catch (Exception e) {}
         }
     }
 }
