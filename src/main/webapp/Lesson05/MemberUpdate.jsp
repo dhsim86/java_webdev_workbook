@@ -14,7 +14,7 @@
 <body>
     <h1>member info</h1>
 
-    <form action="update" method="post">
+    <form action="update.do" method="post">
 
         number: <input type="text" name="no" value="${member.no}" readonly><br>
         name: <input type="text" name="name" value="${member.name}"> <br>
@@ -23,9 +23,9 @@
 
         <input type="submit" value="save">
         <input type="button" value="delete"
-           onclick="location.href='delete?no=${member.no}'">
+           onclick="location.href='delete.do?no=${member.no}'">
         <input type="button" value="cancel"
-           onclick="location.href='list'">
+           onclick="location.href='list.do'">
 
     </form>
 </body>

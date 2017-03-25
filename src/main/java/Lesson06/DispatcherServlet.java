@@ -38,7 +38,7 @@ public class DispatcherServlet extends HttpServlet {
                 if (request.getParameter("email") != null) {
                     request.setAttribute("member",
                         new Member().setEmail(request.getParameter("email"))
-                                    .setNo(Integer.parseInt(request.getParameter("no")))
+                                    .setPassword(request.getParameter("password"))
                                     .setName(request.getParameter("name"))
                     );
                 }
@@ -86,7 +86,7 @@ public class DispatcherServlet extends HttpServlet {
             request.setAttribute("error", e);
 
             RequestDispatcher requestDispatcher =
-                request.getRequestDispatcher("/Error.jsp");
+                request.getRequestDispatcher("/Lesson05/Error.jsp");
 
             requestDispatcher.forward(request, response);
         }

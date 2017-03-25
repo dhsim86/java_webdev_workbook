@@ -22,7 +22,7 @@
         %>
         <%=member.getName()%>
         <a style="color:white;"
-           href="<%=request.getContextPath()%>/auth/logout">Logout</a>
+           href="<%=request.getContextPath()%>/auth/logout.do">Logout</a>
         <%
             }
         %>

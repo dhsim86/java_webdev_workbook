@@ -18,7 +18,7 @@
 <body>
     <jsp:include page="Header.jsp"/>
     <h1>Member List</h1>
-    <p><a href='add'> New Member </a></p>
+    <p><a href='add.do'> New Member </a></p>
     <jsp:useBean id="memberList"
                 scope="request"
                 class="java.util.ArrayList"
@@ -30,20 +30,20 @@
         for (Member member : dummyList) {
     %>
     <%=member.getNo()%>
-    <a href='update?no=<%=member.getNo()%>'><%=member.getName()%></a>
+    <a href='update.do?no=<%=member.getNo()%>'><%=member.getName()%></a>
     <%=member.getEmail()%>
     <%=member.getCreatedDate()%>
-    <a href='delete?no=<%=member.getNo()%>'>[Delete]</a><br>
+    <a href='delete.do?no=<%=member.getNo()%>'>[Delete]</a><br>
     <%
         }
     %>
 
     <c:forEach var="member" items="${memberList}">
         ${member.no}
-        <a href="update?no=${member.no}">${member.name}</a>
+        <a href="update.do?no=${member.no}">${member.name}</a>
         ${member.email}
         ${member.createdDate}
-        <a href="delete?no=${member.no}">[Delete]</a><br>
+        <a href="delete.do?no=${member.no}">[Delete]</a><br>
     </c:forEach>
 
     <jsp:include page="Tail.jsp"/>

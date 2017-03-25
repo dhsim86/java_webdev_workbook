@@ -21,10 +21,8 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(
         HttpServletRequest request, HttpServletResponse response
     ) throws ServletException, IOException {
-        RequestDispatcher rd = request.getRequestDispatcher(
-            "/Lesson05/LogInForm.jsp"
-        );
-        rd.forward(request, response);
+
+        request.setAttribute("viewUrl", "/Lesson05/LogInForm.jsp");
     }
 
     @Override
@@ -47,13 +45,10 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("member", member);
 
-                response.sendRedirect("../member/list");
+                request.setAttribute("viewUrl", "redirect:../member/list.do");
             }
             else {
-                RequestDispatcher rd = request.getRequestDispatcher(
-                        "/Lesson05/LogInFail.jsp"
-                );
-                rd.forward(request, response);
+                request.setAttribute("viewUrl", "/Lesson05/LogInFail.jsp");
             }
         }
         catch (Exception e) {

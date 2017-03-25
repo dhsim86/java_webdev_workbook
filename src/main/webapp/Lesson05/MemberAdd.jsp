@@ -15,7 +15,7 @@
     <jsp:include page="Header.jsp" />
     <h1>register member</h1>
 
-    <form action="add" method="post">
+    <form action="add.do" method="post">
 
         name: <input type="text" name="name"> <br>
         email: <input type="text" name="email"> <br>

@@ -25,22 +25,12 @@ public class MemberListServlet extends HttpServlet {
             ServletContext sc = this.getServletContext();
 
             MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
-
             request.setAttribute("memberList", memberDao.selectList());
-            response.setContentType("text/html; charset=UTF-8");
-
-            RequestDispatcher rd = request.getRequestDispatcher(
-                    "/Lesson05/MemberList.jsp"
-            );
-            rd.include(request, response);
+            request.setAttribute("viewUrl", "/Lesson05/MemberList.jsp");
         }
         catch (Exception e) {
 
-            request.setAttribute("error", e);
-            RequestDispatcher rd = request.getRequestDispatcher(
-                    "/Lesson05/Error.jsp"
-            );
-            rd.forward(request, response);
+            throw new ServletException(e);
         }
     }
 }

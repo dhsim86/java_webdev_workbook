@@ -13,7 +13,7 @@
 </head>
 <body>
     <h2>User Login</h2>
-    <form action="login" method="post">
+    <form action="login.do" method="post">
         email: <input type="text" name="email"><br>
         password: <input type="password" name="password"><br>
 

@@ -20,11 +20,7 @@ public class MemberAddServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-        RequestDispatcher rd = request.getRequestDispatcher(
-            "/Lesson05/MemberAdd.jsp"
-        );
-
-        rd.include(request, response);
+        request.setAttribute("viewUrl", "/Lesson05/MemberAdd.jsp");
     }
 
     @Override
@@ -36,22 +32,14 @@ public class MemberAddServlet extends HttpServlet {
 
             MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 
-            Member member = new Member()
-                .setEmail(request.getParameter("email"))
-                .setPassword(request.getParameter("password"))
-                .setName(request.getParameter("name"));
-
+            Member member = (Member)request.getAttribute("member");
             int result = memberDao.insert(member);
-            response.sendRedirect("list");
+
+            request.setAttribute("viewUrl", "redirect:list.do");
         }
         catch (Exception e) {
 
-            request.setAttribute("error", e);
-
-            RequestDispatcher rd = request.getRequestDispatcher(
-                "/Lesson05/Error.jsp"
-            );
-            rd.forward(request, response);
+            throw new ServletException(e);
         }
     }
 }
