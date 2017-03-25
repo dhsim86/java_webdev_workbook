@@ -24,8 +24,7 @@ public class MemberListServlet extends HttpServlet {
 
             ServletContext sc = this.getServletContext();
 
-            MemberDao memberDao = new MemberDao();
-            memberDao.setConnection((Connection) sc.getAttribute("conn"));
+            MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 
             request.setAttribute("memberList", memberDao.selectList());
             response.setContentType("text/html; charset=UTF-8");

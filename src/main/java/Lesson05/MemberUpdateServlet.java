@@ -24,8 +24,7 @@ public class MemberUpdateServlet extends HttpServlet {
         try {
             ServletContext sc = this.getServletContext();
 
-            MemberDao memberDao = new MemberDao();
-            memberDao.setConnection((Connection) sc.getAttribute("conn"));
+            MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 
             response.setContentType("text/html; charset=UTF-8");
             request.setAttribute("member", memberDao.selectOne(Integer.parseInt(request.getParameter("no"))));
@@ -54,8 +53,7 @@ public class MemberUpdateServlet extends HttpServlet {
         try {
             ServletContext sc = this.getServletContext();
 
-            MemberDao memberDao = new MemberDao();
-            memberDao.setConnection((Connection) sc.getAttribute("conn"));
+            MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 
             Member member = new Member()
                 .setEmail(request.getParameter("email"))

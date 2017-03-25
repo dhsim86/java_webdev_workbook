@@ -46,7 +46,7 @@ public class AppInitServlet extends HttpServlet {
             }
         }
         catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 }
