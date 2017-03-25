@@ -1,11 +1,10 @@
+import Lesson05.DBConnectionPool;
 import Lesson05.MemberDao;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
 
 /**
  * Created by Dongho on 2017. 3. 25..
@@ -14,7 +13,7 @@ import java.sql.DriverManager;
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
 
-    private Connection conn;
+    private DBConnectionPool dbConnectionPool;
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
@@ -22,15 +21,15 @@ public class ContextLoaderListener implements ServletContextListener {
         try {
             ServletContext sc = event.getServletContext();
 
-            Class.forName(sc.getInitParameter("driver"));
-            conn = DriverManager.getConnection(
+            dbConnectionPool = new DBConnectionPool(
+                sc.getInitParameter("driver"),
                 sc.getInitParameter("url"),
                 sc.getInitParameter("username"),
                 sc.getInitParameter("password")
             );
 
             MemberDao memberDao = new MemberDao();
-            memberDao.setConnection(conn);
+            memberDao.setDbConnectionPool(dbConnectionPool);
 
             sc.setAttribute("memberDao", memberDao);
         }
@@ -41,10 +40,7 @@ public class ContextLoaderListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {
-        try {
-            conn.close();
-        } catch (Exception e) {
 
-        }
+        dbConnectionPool.closeAll();
     }
 }

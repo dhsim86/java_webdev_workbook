@@ -9,18 +9,22 @@ import java.util.List;
  */
 public class MemberDao {
 
-    Connection connection;
+    private DBConnectionPool dbConnectionPool;
 
-    public void setConnection(Connection connection) {
-        this.connection = connection;
+    public void setDbConnectionPool(DBConnectionPool dbConnectionPool) {
+        this.dbConnectionPool = dbConnectionPool;
     }
 
     public List<Member> selectList() throws Exception {
 
+        Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
 
         try {
+
+            connection = dbConnectionPool.getConnection();
+
             stmt = connection.createStatement();
             rs = stmt.executeQuery(
                 "select mno, mname, email, cre_date" +
@@ -47,14 +51,20 @@ public class MemberDao {
         finally {
             try { if (rs != null) rs.close(); } catch (Exception e) {}
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+
+            if (connection != null) dbConnectionPool.returnConnection(connection);
         }
     }
 
     public int insert(Member member) throws Exception {
 
+        Connection connection = null;
         PreparedStatement stmt = null;
 
         try {
+
+            connection = dbConnectionPool.getConnection();
+
             stmt = connection.prepareStatement(
                 "insert into members(email, pwd, mname, cre_date, mod_date)" +
                 " values(?, ?, ?, now(), now())"
@@ -71,14 +81,18 @@ public class MemberDao {
         }
         finally {
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+            if (connection != null) dbConnectionPool.returnConnection(connection);
         }
     }
 
     public int delete(int no) throws Exception {
 
+        Connection connection = null;
         PreparedStatement stmt = null;
 
         try {
+
+            connection = dbConnectionPool.getConnection();
 
             stmt = connection.prepareStatement(
                 "delete from members" +
@@ -94,16 +108,19 @@ public class MemberDao {
         }
         finally {
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+            if (connection != null) dbConnectionPool.returnConnection(connection);
         }
     }
 
     public Member selectOne(int no) throws Exception {
 
+        Connection connection = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
 
+            connection = dbConnectionPool.getConnection();
             stmt = connection.prepareStatement(
                 "select mno, mname, email, cre_date" +
                 " from members" +
@@ -130,14 +147,18 @@ public class MemberDao {
         finally {
             try { if (rs != null) rs.close(); } catch (Exception e) {}
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+            if (connection != null) dbConnectionPool.returnConnection(connection);
         }
     }
 
     public int update(Member member) throws Exception {
 
+        Connection connection = null;
         PreparedStatement stmt = null;
 
         try {
+
+            connection = dbConnectionPool.getConnection();
 
             stmt = connection.prepareStatement(
                 "update members set email = ?, mname = ?, mod_date = now()" +
@@ -155,16 +176,19 @@ public class MemberDao {
         }
         finally {
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+            if (connection != null) dbConnectionPool.returnConnection(connection);
         }
     }
 
     public Member exist(String email, String password) throws Exception {
 
+        Connection connection = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
 
+            connection = dbConnectionPool.getConnection();
             stmt = connection.prepareStatement(
                 " select mno, mname, email, cre_date" +
                 " from members" +
@@ -195,6 +219,7 @@ public class MemberDao {
         finally {
             try { if (rs != null) rs.close(); } catch (Exception e) {}
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+            if (connection != null) dbConnectionPool.returnConnection(connection);
         }
     }
 }
