@@ -1,5 +1,6 @@
 package Lesson05;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +10,11 @@ import java.util.List;
  */
 public class MemberDao {
 
-    private DBConnectionPool dbConnectionPool;
+    DataSource dataSource;
 
-    public void setDbConnectionPool(DBConnectionPool dbConnectionPool) {
-        this.dbConnectionPool = dbConnectionPool;
+    public void setDataSource(DataSource dataSource) {
+
+        this.dataSource = dataSource;
     }
 
     public List<Member> selectList() throws Exception {
@@ -23,7 +25,7 @@ public class MemberDao {
 
         try {
 
-            connection = dbConnectionPool.getConnection();
+            connection = dataSource.getConnection();
 
             stmt = connection.createStatement();
             rs = stmt.executeQuery(
@@ -52,7 +54,7 @@ public class MemberDao {
             try { if (rs != null) rs.close(); } catch (Exception e) {}
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
 
-            if (connection != null) dbConnectionPool.returnConnection(connection);
+            try { if (connection != null) connection.close(); } catch (Exception e) {}
         }
     }
 
@@ -63,7 +65,7 @@ public class MemberDao {
 
         try {
 
-            connection = dbConnectionPool.getConnection();
+            connection = dataSource.getConnection();
 
             stmt = connection.prepareStatement(
                 "insert into members(email, pwd, mname, cre_date, mod_date)" +
@@ -81,7 +83,7 @@ public class MemberDao {
         }
         finally {
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
-            if (connection != null) dbConnectionPool.returnConnection(connection);
+            try { if (connection != null) connection.close(); } catch (Exception e) {}
         }
     }
 
@@ -92,7 +94,7 @@ public class MemberDao {
 
         try {
 
-            connection = dbConnectionPool.getConnection();
+            connection = dataSource.getConnection();
 
             stmt = connection.prepareStatement(
                 "delete from members" +
@@ -108,7 +110,7 @@ public class MemberDao {
         }
         finally {
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
-            if (connection != null) dbConnectionPool.returnConnection(connection);
+            try { if (connection != null) connection.close(); } catch (Exception e) {}
         }
     }
 
@@ -120,7 +122,7 @@ public class MemberDao {
 
         try {
 
-            connection = dbConnectionPool.getConnection();
+            connection = dataSource.getConnection();
             stmt = connection.prepareStatement(
                 "select mno, mname, email, cre_date" +
                 " from members" +
@@ -147,7 +149,7 @@ public class MemberDao {
         finally {
             try { if (rs != null) rs.close(); } catch (Exception e) {}
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
-            if (connection != null) dbConnectionPool.returnConnection(connection);
+            try { if (connection != null) connection.close(); } catch (Exception e) {}
         }
     }
 
@@ -158,7 +160,7 @@ public class MemberDao {
 
         try {
 
-            connection = dbConnectionPool.getConnection();
+            connection = dataSource.getConnection();
 
             stmt = connection.prepareStatement(
                 "update members set email = ?, mname = ?, mod_date = now()" +
@@ -176,7 +178,7 @@ public class MemberDao {
         }
         finally {
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
-            if (connection != null) dbConnectionPool.returnConnection(connection);
+            try { if (connection != null) connection.close(); } catch (Exception e) {}
         }
     }
 
@@ -188,7 +190,7 @@ public class MemberDao {
 
         try {
 
-            connection = dbConnectionPool.getConnection();
+            connection = dataSource.getConnection();
             stmt = connection.prepareStatement(
                 " select mno, mname, email, cre_date" +
                 " from members" +
@@ -219,7 +221,7 @@ public class MemberDao {
         finally {
             try { if (rs != null) rs.close(); } catch (Exception e) {}
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
-            if (connection != null) dbConnectionPool.returnConnection(connection);
+            try { if (connection != null) connection.close(); } catch (Exception e) {}
         }
     }
 }
