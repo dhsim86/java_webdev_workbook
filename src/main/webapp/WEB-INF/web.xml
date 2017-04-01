@@ -12,7 +12,7 @@
     </context-param>
     <context-param>
         <param-name>url</param-name>
-        <param-value>jdbc:mysql://localhost/studydb?useUnicode=true&amp;characterEncoding=UTF-8</param-value>
+        <param-value>jdbc:mysql://localhost/studydb?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=true&amp;verifyServerCertificate=false</param-value>
     </context-param>
     <context-param>
         <param-name>username</param-name>
