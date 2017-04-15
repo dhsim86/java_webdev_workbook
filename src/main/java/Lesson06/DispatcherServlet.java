@@ -32,12 +32,11 @@ public class DispatcherServlet extends HttpServlet {
         String servletPath = request.getServletPath();
         
         try {
-            ServletContext servletContext = this.getServletContext();
+        	ApplicationContext applicationContext = ContextLoaderListener.getApplicationContext();
             
             Map<String, Object> model = new HashMap<>();
 
-            String pageControllerPath = null;
-            Controller pageController = (Controller)servletContext.getAttribute(servletPath);
+            Controller pageController = (Controller)applicationContext.getBean(servletPath);
             
             if (pageController instanceof DataBinding) {
             	prepareRequestData(request, model, (DataBinding)pageController);
