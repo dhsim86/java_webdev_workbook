@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+@Component("/auth/logout.do")
 public class MemberLogoutController implements Controller, DataBinding {
 
 	@Override

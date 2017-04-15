@@ -4,6 +4,7 @@ import java.util.Map;
 
 import Lesson05.MemberDao;
 
+@Component("/member/list.do")
 public class MemberListController implements Controller {
     
 	MemberDao memberDao;

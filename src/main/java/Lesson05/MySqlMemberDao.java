@@ -1,6 +1,9 @@
 package Lesson05;
 
 import javax.sql.DataSource;
+
+import Lesson06.Component;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +11,7 @@ import java.util.List;
 /**
  * Created by Dongho on 2017. 3. 11..
  */
+@Component("memberDao")
 public class MySqlMemberDao implements MemberDao {
 
     DataSource dataSource;

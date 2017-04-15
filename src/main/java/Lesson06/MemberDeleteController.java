@@ -4,6 +4,7 @@ import java.util.Map;
 
 import Lesson05.MemberDao;
 
+@Component("/member/delete.do")
 public class MemberDeleteController implements Controller, DataBinding {
 
 	MemberDao memberDao;

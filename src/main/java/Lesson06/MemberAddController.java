@@ -5,6 +5,7 @@ import java.util.Map;
 import Lesson05.Member;
 import Lesson05.MemberDao;
 
+@Component("/member/add.do")
 public class MemberAddController implements Controller, DataBinding {
     
 	MemberDao memberDao;

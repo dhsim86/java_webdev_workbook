@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import Lesson05.Member;
 import Lesson05.MemberDao;
 
+@Component("/auth/login.do")
 public class MemberLoginController implements Controller, DataBinding {
 	
 	MemberDao memberDao;
