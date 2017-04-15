@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Dongho on 2017. 3. 25..
@@ -33,45 +34,13 @@ public class DispatcherServlet extends HttpServlet {
         try {
             ServletContext servletContext = this.getServletContext();
             
-            HashMap<String, Object> model = new HashMap<>();
+            Map<String, Object> model = new HashMap<>();
 
             String pageControllerPath = null;
             Controller pageController = (Controller)servletContext.getAttribute(servletPath);
             
-            if ("/member/list.do".equals(servletPath)) {
-            }
-            else if ("/member/add.do".equals(servletPath)) {
-                if (request.getParameter("email") != null) {
-                    model.put("member",
-                        new Member().setEmail(request.getParameter("email"))
-                                    .setPassword(request.getParameter("password"))
-                                    .setName(request.getParameter("name")));
-                }
-            }
-            else if ("/member/update.do".equals(servletPath)) {
-                if (request.getParameter("email") != null) {
-                    model.put("member",
-                        new Member().setEmail(request.getParameter("email"))
-                                    .setNo(Integer.parseInt(request.getParameter("no")))
-                                    .setName(request.getParameter("name")));
-                }
-                else {
-                    model.put("no", request.getParameter("no"));
-                }
-            }
-            else if ("/member/delete.do".equals(servletPath)) {
-                model.put("no", request.getParameter("no"));
-            }
-            else if ("/auth/login.do".equals(servletPath)) {
-                model.put("session", request.getSession());
-                if (request.getMethod().equals("POST")) {
-                    
-                    model.put("email", request.getParameter("email"));
-                    model.put("password", request.getParameter("password"));
-                }
-            }
-            else if ("/auth/logout.do".equals(servletPath)) {
-                model.put("session", request.getSession());
+            if (pageController instanceof DataBinding) {
+            	prepareRequestData(request, model, (DataBinding)pageController);
             }
             
             String viewUrl = pageController.execute(model);
@@ -88,57 +57,6 @@ public class DispatcherServlet extends HttpServlet {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewUrl);
                 requestDispatcher.include(request, response);
             }
-/*
-            if ("/member/list.do".equals(servletPath)) {
-                pageControllerPath = "/member/list";
-            }
-            else if ("/member/add.do".equals(servletPath)) {
-                pageControllerPath = "/member/add";
-
-                if (request.getParameter("email") != null) {
-                    request.setAttribute("member",
-                        new Member().setEmail(request.getParameter("email"))
-                                    .setPassword(request.getParameter("password"))
-                                    .setName(request.getParameter("name"))
-                    );
-                }
-            }
-            else if ("/member/update.do".equals(servletPath)) {
-                pageControllerPath = "/member/update";
-
-                if (request.getParameter("email") != null) {
-                    request.setAttribute("member",
-                            new Member().setEmail(request.getParameter("email"))
-                                    .setNo(Integer.parseInt(request.getParameter("no")))
-                                    .setName(request.getParameter("name"))
-                    );
-                }
-            }
-            else if ("/member/delete.do".equals(servletPath)) {
-                pageControllerPath = "/member/delete";
-            }
-            else if ("/auth/login.do".equals(servletPath)) {
-                pageControllerPath = "/auth/login";
-            }
-            else if ("/auth/logout.do".equals(servletPath)) {
-                pageControllerPath = "/auth/logout";
-            }
-
-            RequestDispatcher requestDispatcher =
-                request.getRequestDispatcher(pageControllerPath);
-
-            requestDispatcher.include(request, response);
-
-            String viewUrl = (String)request.getAttribute("viewUrl");
-
-            if (viewUrl.startsWith("redirect:")) {
-                response.sendRedirect(viewUrl.substring(9));
-                return;
-            }
-            else {
-                requestDispatcher = request.getRequestDispatcher(viewUrl);
-                requestDispatcher.include(request, response);
-            }*/
         }
         catch (Exception e) {
 
@@ -150,5 +68,23 @@ public class DispatcherServlet extends HttpServlet {
 
             requestDispatcher.forward(request, response);
         }
+    }
+    
+    private void prepareRequestData(
+    	HttpServletRequest request, Map<String, Object> model, DataBinding dataBinding)
+    	throws Exception {
+    	
+    	Object[] dataBinders = dataBinding.getDataBinders();
+    	
+    	String dataName;
+    	Class<?> dataType = null;
+    	Object dataObj = null;
+    	
+    	for (int i = 0; i < dataBinders.length; i += 2) {
+    		dataName = (String)dataBinders[i];
+    		dataType = (Class<?>)dataBinders[i + 1];
+    		dataObj = ServletRequestDataBinder.bind(request, dataType, dataName);
+    		model.put(dataName, dataObj);
+    	}
     }
 }

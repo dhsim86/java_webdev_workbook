@@ -5,7 +5,7 @@ import java.util.Map;
 import Lesson05.Member;
 import Lesson05.MemberDao;
 
-public class MemberUpdateController implements Controller {
+public class MemberUpdateController implements Controller, DataBinding {
 	
 	MemberDao memberDao;
     
@@ -14,19 +14,28 @@ public class MemberUpdateController implements Controller {
 		return this;
 	}
 	
+	@Override
+	public Object[] getDataBinders() {
+		return new Object[] {
+			"member", Lesson05.Member.class,
+			"no", Integer.class
+		};
+	}
+	
     @Override
     public String execute(Map<String, Object> model) throws Exception {
         
-        if (model.get("member") == null) {
+        Member member = (Member)model.get("member");
+    	
+        if (member.getEmail() == null) {
             
-            int memberNo = Integer.parseInt((String)model.get("no"));
+            int memberNo = (Integer)model.get("no");
             model.put("member", memberDao.selectOne(memberNo));
             
             return "/Lesson05/MemberUpdate.jsp";
         }
         else {
             
-            Member member = (Member)model.get("member");
             int result = memberDao.update(member);
             
             return "redirect:list.do";

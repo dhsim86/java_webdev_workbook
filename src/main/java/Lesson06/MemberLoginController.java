@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 import Lesson05.Member;
 import Lesson05.MemberDao;
 
-public class MemberLoginController implements Controller {
+public class MemberLoginController implements Controller, DataBinding {
 	
 	MemberDao memberDao;
 	
@@ -14,23 +14,32 @@ public class MemberLoginController implements Controller {
 		this.memberDao = memberDao;
 		return this;
 	}
+	
+	@Override
+	public Object[] getDataBinders() {
+		return new Object[] {
+			"httpSession", HttpSession.class,
+			"member", Lesson05.Member.class,
+		};
+	}
 
     @Override
     public String execute(Map<String, Object> model) throws Exception {
         
-        HttpSession session = (HttpSession)model.get("session");
+        HttpSession session = (HttpSession)model.get("httpSession");
+        Member member = (Member)model.get("member");
         
-        if (model.get("email") == null){
+        if (member.getEmail() == null){
             
             return "/Lesson05/LogInForm.jsp";
         }
         else {
             
-            Member member = memberDao.exist(
-                (String)model.get("email"), (String)model.get("password"));
+            Member memberExist = memberDao.exist(
+                member.getEmail(), member.getPassword());
             
-            if (member != null) {
-                session.setAttribute("member", member);
+            if (memberExist != null) {
+                session.setAttribute("member", memberExist);
                 
                 return "redirect:../member/list.do";
             }

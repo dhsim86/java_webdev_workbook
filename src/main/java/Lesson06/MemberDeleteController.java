@@ -4,7 +4,7 @@ import java.util.Map;
 
 import Lesson05.MemberDao;
 
-public class MemberDeleteController implements Controller {
+public class MemberDeleteController implements Controller, DataBinding {
 
 	MemberDao memberDao;
 	
@@ -13,10 +13,17 @@ public class MemberDeleteController implements Controller {
 		return this;
 	}
 	
+	@Override
+	public Object[] getDataBinders() {
+		return new Object[] {
+			"no", Integer.class,
+		};
+	}
+	
     @Override
     public String execute(Map<String, Object> model) throws Exception {
         
-        int memberNo = Integer.parseInt((String)model.get("no"));
+        int memberNo = (Integer)model.get("no");
         int result = memberDao.delete(memberNo);
         
         return "redirect:list.do";

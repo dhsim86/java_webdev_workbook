@@ -4,12 +4,19 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-public class MemberLogoutController implements Controller {
+public class MemberLogoutController implements Controller, DataBinding {
 
+	@Override
+	public Object[] getDataBinders() {
+		return new Object[] {
+			"httpSession", HttpSession.class,
+		};
+	}
+	
     @Override
     public String execute(Map<String, Object> model) throws Exception {
         
-        HttpSession session = (HttpSession)model.get("session");
+        HttpSession session = (HttpSession)model.get("httpSession");
         session.invalidate();
         
         return "redirect:login.do";
