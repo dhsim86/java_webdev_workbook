@@ -7,6 +7,13 @@ import Lesson05.MemberDao;
 
 public class MemberAddController implements Controller {
     
+	MemberDao memberDao;
+	
+	public MemberAddController setMemberDao(MemberDao memberDao) {
+		this.memberDao = memberDao;
+		return this;
+	}
+	
     @Override
     public String execute(Map<String, Object> model) throws Exception {
         
@@ -14,8 +21,6 @@ public class MemberAddController implements Controller {
             return "/Lesson05/MemberAdd.jsp";
         }
         else {
-            
-            MemberDao memberDao = (MemberDao)model.get("memberDao");
             
             Member member = (Member)model.get("member");
             memberDao.insert(member);

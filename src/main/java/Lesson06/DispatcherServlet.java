@@ -34,17 +34,13 @@ public class DispatcherServlet extends HttpServlet {
             ServletContext servletContext = this.getServletContext();
             
             HashMap<String, Object> model = new HashMap<>();
-            model.put("memberDao", servletContext.getAttribute("memberDao"));
 
             String pageControllerPath = null;
-            Controller pageController = null;
+            Controller pageController = (Controller)servletContext.getAttribute(servletPath);
             
             if ("/member/list.do".equals(servletPath)) {
-                pageController = new MemberListController();
             }
             else if ("/member/add.do".equals(servletPath)) {
-                pageController = new MemberAddController();
-                
                 if (request.getParameter("email") != null) {
                     model.put("member",
                         new Member().setEmail(request.getParameter("email"))
@@ -53,8 +49,6 @@ public class DispatcherServlet extends HttpServlet {
                 }
             }
             else if ("/member/update.do".equals(servletPath)) {
-                pageController = new MemberUpdateController();
-                
                 if (request.getParameter("email") != null) {
                     model.put("member",
                         new Member().setEmail(request.getParameter("email"))
@@ -66,14 +60,9 @@ public class DispatcherServlet extends HttpServlet {
                 }
             }
             else if ("/member/delete.do".equals(servletPath)) {
-                
-                pageController = new MemberDeleteController();
                 model.put("no", request.getParameter("no"));
             }
             else if ("/auth/login.do".equals(servletPath)) {
-                
-                pageController = new MemberLoginController();
-                
                 model.put("session", request.getSession());
                 if (request.getMethod().equals("POST")) {
                     
@@ -82,9 +71,6 @@ public class DispatcherServlet extends HttpServlet {
                 }
             }
             else if ("/auth/logout.do".equals(servletPath)) {
-                
-                pageController = new MemberLogoutController();
-                
                 model.put("session", request.getSession());
             }
             

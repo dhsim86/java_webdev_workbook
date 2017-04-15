@@ -7,6 +7,13 @@ import Lesson05.Member;
 import Lesson05.MemberDao;
 
 public class MemberLoginController implements Controller {
+	
+	MemberDao memberDao;
+	
+	public MemberLoginController setMemberDao(MemberDao memberDao) {
+		this.memberDao = memberDao;
+		return this;
+	}
 
     @Override
     public String execute(Map<String, Object> model) throws Exception {
@@ -18,8 +25,6 @@ public class MemberLoginController implements Controller {
             return "/Lesson05/LogInForm.jsp";
         }
         else {
-            
-            MemberDao memberDao = (MemberDao)model.get("memberDao");
             
             Member member = memberDao.exist(
                 (String)model.get("email"), (String)model.get("password"));
