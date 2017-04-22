@@ -17,12 +17,22 @@
 <div style="background-color:#00008B; color:#FFFFFF; height:20px; padding:5px;">
     SPMS(Simple Project Management System)
     <span style="float:right;">
+        <a style="color:white;"
+           href="<%=request.getContextPath()%>/project/list.do">Project</a>
+        <a style="color:white;"
+           href="<%=request.getContextPath()%>/member/list.do">Member</a>
         <%
             if (member.getEmail() != null) {
         %>
         <%=member.getName()%>
         <a style="color:white;"
            href="<%=request.getContextPath()%>/auth/logout.do">Logout</a>
+        <%
+            }
+            else {
+        %>
+        <a style="color:white;"
+           href="<%=request.getContextPath()%>/auth/login.do">Login</a>
         <%
             }
         %>

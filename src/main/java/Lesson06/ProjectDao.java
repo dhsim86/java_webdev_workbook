@@ -12,5 +12,5 @@ public interface ProjectDao {
 	public int insert(Project project) throws Exception;
 	public int delete(int no) throws Exception;
 	public Project selectOne(int no) throws Exception;
-	//public int update(Project project) throws Exception;
+	public int update(Project project) throws Exception;
 }

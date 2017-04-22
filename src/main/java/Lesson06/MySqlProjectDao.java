@@ -78,7 +78,7 @@ public class MySqlProjectDao implements ProjectDao {
 			connection = dataSource.getConnection();
 			stmt = connection.prepareStatement(
 				"insert into projects(pname, content, sta_date, end_date, state, cre_date, tags)" +
-				" values(?, ?, ?, ?, ?, now()"
+				" values(?, ?, ?, ?, ?, now(), ?)"
 			);
 			
 			stmt.setString(1, project.getTitle());
@@ -86,6 +86,7 @@ public class MySqlProjectDao implements ProjectDao {
 			stmt.setDate(3, java.sql.Date.valueOf(project.getStartDate().toString()));
 			stmt.setDate(4, java.sql.Date.valueOf(project.getEndDate().toString()));
 			stmt.setInt(5,  project.getState());
+			stmt.setString(6, project.getTags());
 			
 			int result = stmt.executeUpdate();
 			
@@ -142,7 +143,7 @@ public class MySqlProjectDao implements ProjectDao {
 				"select pno, pname, content, sta_date, end_date, state, cre_date, " +
 				"end_date, state, cre_date, tags " +
 				"from projects " +
-				" where = ?"
+				" where pno = ?"
 			);
 			stmt.setInt(1, no);
 			
@@ -171,7 +172,7 @@ public class MySqlProjectDao implements ProjectDao {
             try { if (connection != null) connection.close(); } catch (Exception e) {}
 		}
 	}
-	/*
+	
 	@Override
 	public int update(Project project) throws Exception {
 		
@@ -181,9 +182,23 @@ public class MySqlProjectDao implements ProjectDao {
 		try {
 			
 			connection = dataSource.getConnection();
+			
 			stmt = connection.prepareStatement(
-				"update projects "
+				"update projects set pname = ?, content = ?, sta_date = ?, end_date = ?, tags = ?" +
+				" ,state = ?" +
+				" where pno = ?"
 			);
+			
+			stmt.setString(1, project.getTitle());
+			stmt.setString(2, project.getContent());
+			stmt.setDate(3, java.sql.Date.valueOf(project.getStartDate().toString()));
+			stmt.setDate(4, java.sql.Date.valueOf(project.getEndDate().toString()));
+			stmt.setString(5, project.getTags());
+			stmt.setInt(6, project.getState());
+			stmt.setInt(7, project.getNo());
+			
+			int result = stmt.executeUpdate();
+			return result;
 		}
 		catch (Exception e) {
 			throw e;
@@ -192,5 +207,5 @@ public class MySqlProjectDao implements ProjectDao {
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
             try { if (connection != null) connection.close(); } catch (Exception e) {}
 		}
-	}*/
+	}
 }

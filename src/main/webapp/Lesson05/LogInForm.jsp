@@ -12,6 +12,7 @@
     <title>Login</title>
 </head>
 <body>
+    <jsp:include page="Header.jsp" />
     <h2>User Login</h2>
     <form action="login.do" method="post">
         email: <input type="text" name="email"><br>
@@ -19,5 +20,6 @@
 
         <input type="submit" value="Login">
     </form>
+    <jsp:include page="Tail.jsp" />
 </body>
 </html>

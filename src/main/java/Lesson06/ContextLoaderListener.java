@@ -24,8 +24,6 @@ public class ContextLoaderListener implements ServletContextListener {
 	public static ApplicationContext getApplicationContext() {
 		return applicationContext;
 	}
-	
-    private BasicDataSource dataSource;
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
@@ -50,6 +48,10 @@ public class ContextLoaderListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent event) {
 
-        try { if (dataSource != null) dataSource.close(); } catch (SQLException e) {}
+        try { 
+        	BasicDataSource dataSource = (BasicDataSource)applicationContext.getBean("dataSource");
+        	if (dataSource != null) dataSource.close(); 
+    	} 
+        catch (SQLException e) {}
     }
 }
